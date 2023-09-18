@@ -6,7 +6,8 @@ const content = document.getElementById("content");
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault()
-
+  content.classList.remove("placeholder")
+  
   const videoURL = input.value
 
   if(!videoURL.includes("shorts")) {
@@ -21,11 +22,13 @@ form.addEventListener("submit", async (event) => {
 
   const transcription = await server.get(`/summary/${videoId}`)
   
-  content.textContent = transcription
+  content.textContent = "Realizando o resumo..."
 
-  // const summary = await server.post("/summary", {
-  //   text: transcription.data.result,
-  // })
+  const summary = await server.post("/summary", { 
+    text: transcription.data.result,
+  })
 
-  // content.textContent = summary.data.result
+  content.textContent = summary.data.result
+  content.classList.remove("placeholder")
+
 })
